@@ -130,6 +130,7 @@
         .nav-links {
             display: flex;
             list-style: none;
+            align-items: center;
         }
         
         .nav-links li {
@@ -152,6 +153,224 @@
             cursor: pointer;
             font-size: 1.5rem;
             color: var(--secondary);
+        }
+
+        /* Cart Icon Styles */
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.3rem;
+            color: var(--secondary);
+            transition: color 0.3s ease;
+        }
+
+        .cart-icon:hover {
+            color: var(--primary);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Cart Modal Styles */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            background-color: white;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .cart-modal.active {
+            display: block;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .cart-items {
+            padding: 20px;
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-price {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .cart-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-btn {
+            background: none;
+            border: 1px solid #ddd;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quantity-btn:hover {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .item-quantity {
+            font-weight: 600;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .remove-item {
+            background: none;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin-left: 10px;
+        }
+
+        .cart-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background-color: white;
+            border-top: 1px solid #eee;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .cart-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .cart-actions .btn {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+        }
+
+        .clear-cart {
+            background-color: #e74c3c;
+        }
+
+        .clear-cart:hover {
+            background-color: #c0392b;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1500;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Add to Cart Button */
+        .add-to-cart {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .add-to-cart:hover {
+            background-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* Empty Cart Message */
+        .empty-cart {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text);
+        }
+
+        .empty-cart i {
+            font-size: 3rem;
+            color: #ddd;
+            margin-bottom: 20px;
         }
         
         /* Hero Section */
@@ -592,6 +811,10 @@
             .slide img {
                 height: 400px;
             }
+
+            .cart-modal {
+                max-width: 100%;
+            }
         }
         
         @media (max-width: 576px) {
@@ -622,6 +845,10 @@
             .contact-form {
                 padding: 20px;
             }
+
+            .cart-actions {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -632,18 +859,53 @@
             <div class="logo">
                 <h1>Baobab<span>Restaurant</span></h1>
             </div>
-            <div class="hamburger">
-                <i class="fas fa-bars"></i>
-            </div>
-            <ul class="nav-links">
+            <div class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#menu">Menu</a></li>
                 <li><a href="#gallery">Gallery</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
-            </ul>
+                <li>
+                    <div class="cart-icon" id="cartIcon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </div>
+                </li>
+            </div>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
         </div>
     </header>
+
+    <!-- Cart Modal -->
+    <div class="overlay" id="overlay"></div>
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-header">
+            <h3>Your Order</h3>
+            <button class="close-cart" id="closeCart">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be dynamically added here -->
+            <div class="empty-cart">
+                <i class="fas fa-shopping-cart"></i>
+                <p>Your cart is empty</p>
+                <p>Add some delicious items from our menu!</p>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">$0.00</span>
+            </div>
+            <div class="cart-actions">
+                <button class="btn clear-cart" id="clearCart">Clear Cart</button>
+                <button class="btn" id="checkoutBtn">Checkout</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section class="hero" id="home">
@@ -654,96 +916,104 @@
         </div>
     </section>
 
-<!-- Menu Section -->
-<section class="menu" id="menu">
-    <div class="container">
-        <h2>Our Menu</h2>
-        <div class="menu-categories">
-            <button class="category-btn active" data-category="all">All</button>
-            <button class="category-btn" data-category="appetizers">Appetizers</button>
-            <button class="category-btn" data-category="mains">Main Courses</button>
-            <button class="category-btn" data-category="desserts">Desserts</button>
-            <button class="category-btn" data-category="drinks">Drinks</button>
+    <!-- Menu Section -->
+    <section class="menu" id="menu">
+        <div class="container">
+            <h2>Our Menu</h2>
+            <div class="menu-categories">
+                <button class="category-btn active" data-category="all">All</button>
+                <button class="category-btn" data-category="appetizers">Appetizers</button>
+                <button class="category-btn" data-category="mains">Main Courses</button>
+                <button class="category-btn" data-category="desserts">Desserts</button>
+                <button class="category-btn" data-category="drinks">Drinks</button>
+            </div>
+            <div class="menu-items">
+                <!-- Appetizers -->
+                <div class="menu-card" data-category="appetizers">
+                    <img src="img1/Accara.webp" alt="Accara" onerror="this.src='https://via.placeholder.com/300x200?text=Accara'">
+                    <div class="menu-card-content">
+                        <h3>Accara</h3>
+                        <p>Black-eyed pea fritters served with spicy tomato sauce</p>
+                        <div class="price">$8.99</div>
+                        <button class="add-to-cart" data-name="Accara" data-price="8.99">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <div class="menu-card" data-category="appetizers">
+                    <img src="img1/fataya.jpeg" alt="Fataya" onerror="this.src='https://via.placeholder.com/300x200?text=Fataya'">
+                    <div class="menu-card-content">
+                        <h3>Fataya</h3>
+                        <p>Savory fried pastries filled with fish or meat</p>
+                        <div class="price">$7.99</div>
+                        <button class="add-to-cart" data-name="Fataya" data-price="7.99">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <!-- Main Courses -->
+                <div class="menu-card" data-category="mains">
+                    <img src="img1/thieboudiene.jpeg" alt="Thieboudienne" onerror="this.src='https://via.placeholder.com/300x200?text=Thieboudienne'">
+                    <div class="menu-card-content">
+                        <h3>Thieboudienne</h3>
+                        <p>Senegal's national dish - fish and rice with vegetables</p>
+                        <div class="price">$18.99</div>
+                        <button class="add-to-cart" data-name="Thieboudienne" data-price="18.99">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <div class="menu-card" data-category="mains">
+                    <img src="img1/yassa.jpeg" alt="Yassa Poulet" onerror="this.src='https://via.placeholder.com/300x200?text=Yassa+Poulet'">
+                    <div class="menu-card-content">
+                        <h3>Yassa Poulet</h3>
+                        <p>Marinated grilled chicken with onions and lemon sauce</p>
+                        <div class="price">$16.99</div>
+                        <button class="add-to-cart" data-name="Yassa Poulet" data-price="16.99">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <div class="menu-card" data-category="mains">
+                    <img src="img1/mafe.jpeg" alt="Mafe" onerror="this.src='https://via.placeholder.com/300x200?text=Mafe'">
+                    <div class="menu-card-content">
+                        <h3>Mafe</h3>
+                        <p>Peanut stew with meat and vegetables, served with rice</p>
+                        <div class="price">$17.99</div>
+                        <button class="add-to-cart" data-name="Mafe" data-price="17.99">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <!-- Desserts -->
+                <div class="menu-card" data-category="desserts">
+                    <img src="img1/thiakry.jpeg" alt="Thiakry" onerror="this.src='https://via.placeholder.com/300x200?text=Thiakry'">
+                    <div class="menu-card-content">
+                        <h3>Thiakry</h3>
+                        <p>Millet couscous with sweetened yogurt and dried fruits</p>
+                        <div class="price">$6.99</div>
+                        <button class="add-to-cart" data-name="Thiakry" data-price="6.99">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <!-- Drinks -->
+                <div class="menu-card" data-category="drinks">
+                    <img src="img1/bissap.jpeg" alt="Bissap" onerror="this.src='https://via.placeholder.com/300x200?text=Bissap'">
+                    <div class="menu-card-content">
+                        <h3>Bissap</h3>
+                        <p>Refreshing hibiscus tea, a Senegalese favorite</p>
+                        <div class="price">$4.99</div>
+                        <button class="add-to-cart" data-name="Bissap" data-price="4.99">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <div class="menu-card" data-category="drinks">
+                    <img src="img1/ginger.jpeg" alt="Ginger Juice" onerror="this.src='https://via.placeholder.com/300x200?text=Ginger+Juice'">
+                    <div class="menu-card-content">
+                        <h3>Ginger Juice</h3>
+                        <p>Freshly pressed ginger with a hint of lemon</p>
+                        <div class="price">$5.99</div>
+                        <button class="add-to-cart" data-name="Ginger Juice" data-price="5.99">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="menu-items">
-            <!-- Appetizers -->
-            <div class="menu-card" data-category="appetizers">
-                <img src="img1/Accara.webp" alt="Accara">
-                <div class="menu-card-content">
-                    <h3>Accara</h3>
-                    <p>Black-eyed pea fritters served with spicy tomato sauce</p>
-                    <div class="price">$8.99</div>
-                </div>
-            </div>
-            
-            <div class="menu-card" data-category="appetizers">
-                <img src="img1/fataya.jpeg" alt="Fataya">
-                <div class="menu-card-content">
-                    <h3>Fataya</h3>
-                    <p>Savory fried pastries filled with fish or meat</p>
-                    <div class="price">$7.99</div>
-                </div>
-            </div>
-            
-            <!-- Main Courses -->
-            <div class="menu-card" data-category="mains">
-                <img src="img1/thieboudiene.jpeg" alt="Thieboudienne">
-                <div class="menu-card-content">
-                    <h3>Thieboudienne</h3>
-                    <p>Senegal's national dish - fish and rice with vegetables</p>
-                    <div class="price">$18.99</div>
-                </div>
-            </div>
-            
-            <div class="menu-card" data-category="mains">
-                <img src="img1/yassa.jpeg" alt="Yassa Poulet">
-                <div class="menu-card-content">
-                    <h3>Yassa Poulet</h3>
-                    <p>Marinated grilled chicken with onions and lemon sauce</p>
-                    <div class="price">$16.99</div>
-                </div>
-            </div>
-            
-            <div class="menu-card" data-category="mains">
-                <img src="img1/mafe.jpeg" alt="Mafe">
-                <div class="menu-card-content">
-                    <h3>Mafe</h3>
-                    <p>Peanut stew with meat and vegetables, served with rice</p>
-                    <div class="price">$17.99</div>
-                </div>
-            </div>
-            
-            <!-- Desserts -->
-            <div class="menu-card" data-category="desserts">
-                <img src="img1/thiakry.jpeg" alt="Thiakry">
-                <div class="menu-card-content">
-                    <h3>Thiakry</h3>
-                    <p>Millet couscous with sweetened yogurt and dried fruits</p>
-                    <div class="price">$6.99</div>
-                </div>
-            </div>
-            
-            <!-- Drinks -->
-            <div class="menu-card" data-category="drinks">
-                <img src="img1/bissap.jpeg" alt="Bissap">
-                <div class="menu-card-content">
-                    <h3>Bissap</h3>
-                    <p>Refreshing hibiscus tea, a Senegalese favorite</p>
-                    <div class="price">$4.99</div>
-                </div>
-            </div>
-            
-            <div class="menu-card" data-category="drinks">
-                <img src="img1/ginger.jpeg" alt="Ginger Juice">
-                <div class="menu-card-content">
-                    <h3>Ginger Juice</h3>
-                    <p>Freshly pressed ginger with a hint of lemon</p>
-                    <div class="price">$5.99</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+    </section>
 
     <!-- Gallery Section -->
     <section class="gallery" id="gallery">
@@ -752,22 +1022,22 @@
             <div class="gallery-slider">
                 <div class="slider-container">
                     <div class="slide">
-                        <img src="img/bao1.jpeg" alt="Baobab Restaurant Interior">
+                        <img src="img/bao1.jpeg" alt="Baobab Restaurant Interior" onerror="this.src='https://via.placeholder.com/1000x500?text=Restaurant+Interior'">
                     </div>
                     <div class="slide">
-                        <img src="img/bao2.jpeg" alt="Traditional Senegalese Dish">
+                        <img src="img/bao2.jpeg" alt="Traditional Senegalese Dish" onerror="this.src='https://via.placeholder.com/1000x500?text=Traditional+Dish'">
                     </div>
                     <div class="slide">
-                        <img src="img/bao3.jpeg" alt="Chef Preparing Food">
+                        <img src="img/bao3.jpeg" alt="Chef Preparing Food" onerror="this.src='https://via.placeholder.com/1000x500?text=Chef+Cooking'">
                     </div>
                     <div class="slide">
-                        <img src="img/bao4.jpeg" alt="Dining Experience">
+                        <img src="img/bao4.jpeg" alt="Dining Experience" onerror="this.src='https://via.placeholder.com/1000x500?text=Dining+Experience'">
                     </div>
                     <div class="slide">
-                        <img src="img/bao5.jpeg" alt="Restaurant Atmosphere">
+                        <img src="img/bao5.jpeg" alt="Restaurant Atmosphere" onerror="this.src='https://via.placeholder.com/1000x500?text=Restaurant+Atmosphere'">
                     </div>
                     <div class="slide">
-                        <img src="img/bao6.jpeg" alt="Senegalese Cuisine">
+                        <img src="img/bao6.jpeg" alt="Senegalese Cuisine" onerror="this.src='https://via.placeholder.com/1000x500?text=Senegalese+Cuisine'">
                     </div>
                 </div>
                 <button class="slider-btn prev"><i class="fas fa-chevron-left"></i></button>
@@ -910,100 +1180,368 @@
     </footer>
 
     <script>
-        // Mobile Navigation Toggle
-        const hamburger = document.querySelector('.hamburger');
-        const navLinks = document.querySelector('.nav-links');
-        
-        hamburger.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            hamburger.innerHTML = navLinks.classList.contains('active') 
-                ? '<i class="fas fa-times"></i>' 
-                : '<i class="fas fa-bars"></i>';
-        });
-        
-        // Close mobile menu when clicking on a link
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                hamburger.innerHTML = '<i class="fas fa-bars"></i>';
+        // Shopping Cart Functionality
+        class ShoppingCart {
+            constructor() {
+                this.items = [];
+                this.loadCart();
+                this.updateCartDisplay();
+            }
+            
+            // Load cart from localStorage
+            loadCart() {
+                const savedCart = localStorage.getItem('baobabCart');
+                if (savedCart) {
+                    this.items = JSON.parse(savedCart);
+                }
+            }
+            
+            // Save cart to localStorage
+            saveCart() {
+                localStorage.setItem('baobabCart', JSON.stringify(this.items));
+            }
+            
+            // Add item to cart
+            addItem(name, price) {
+                const existingItem = this.items.find(item => item.name === name);
+                
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    this.items.push({
+                        name: name,
+                        price: parseFloat(price),
+                        quantity: 1
+                    });
+                }
+                
+                this.saveCart();
+                this.updateCartDisplay();
+                this.showAddToCartAnimation(name);
+            }
+            
+            // Remove item from cart
+            removeItem(name) {
+                this.items = this.items.filter(item => item.name !== name);
+                this.saveCart();
+                this.updateCartDisplay();
+            }
+            
+            // Update item quantity
+            updateQuantity(name, newQuantity) {
+                if (newQuantity <= 0) {
+                    this.removeItem(name);
+                    return;
+                }
+                
+                const item = this.items.find(item => item.name === name);
+                if (item) {
+                    item.quantity = newQuantity;
+                    this.saveCart();
+                    this.updateCartDisplay();
+                }
+            }
+            
+            // Clear all items from cart
+            clearCart() {
+                this.items = [];
+                this.saveCart();
+                this.updateCartDisplay();
+            }
+            
+            // Calculate total price
+            calculateTotal() {
+                return this.items.reduce((total, item) => total + (item.price * item.quantity), 0);
+            }
+            
+            // Get total quantity of items
+            getTotalQuantity() {
+                return this.items.reduce((total, item) => total + item.quantity, 0);
+            }
+            
+            // Update cart display
+            updateCartDisplay() {
+                const cartCount = document.querySelector('.cart-count');
+                const cartItems = document.getElementById('cartItems');
+                const cartTotal = document.getElementById('cartTotal');
+                
+                // Update cart count
+                cartCount.textContent = this.getTotalQuantity();
+                
+                // Update cart items
+                if (this.items.length === 0) {
+                    cartItems.innerHTML = `
+                        <div class="empty-cart">
+                            <i class="fas fa-shopping-cart"></i>
+                            <p>Your cart is empty</p>
+                            <p>Add some delicious items from our menu!</p>
+                        </div>
+                    `;
+                } else {
+                    cartItems.innerHTML = this.items.map(item => `
+                        <div class="cart-item">
+                            <div class="cart-item-info">
+                                <div class="cart-item-name">${item.name}</div>
+                                <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+                            </div>
+                            <div class="cart-item-controls">
+                                <button class="quantity-btn decrease" data-name="${item.name}">-</button>
+                                <span class="item-quantity">${item.quantity}</span>
+                                <button class="quantity-btn increase" data-name="${item.name}">+</button>
+                                <button class="remove-item" data-name="${item.name}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                    
+                    // Add event listeners to quantity buttons
+                    cartItems.querySelectorAll('.decrease').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const name = e.target.getAttribute('data-name');
+                            const item = this.items.find(item => item.name === name);
+                            if (item) {
+                                this.updateQuantity(name, item.quantity - 1);
+                            }
+                        });
+                    });
+                    
+                    cartItems.querySelectorAll('.increase').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const name = e.target.getAttribute('data-name');
+                            const item = this.items.find(item => item.name === name);
+                            if (item) {
+                                this.updateQuantity(name, item.quantity + 1);
+                            }
+                        });
+                    });
+                    
+                    cartItems.querySelectorAll('.remove-item').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const name = e.target.closest('button').getAttribute('data-name');
+                            this.removeItem(name);
+                        });
+                    });
+                }
+                
+                // Update total
+                cartTotal.textContent = `$${this.calculateTotal().toFixed(2)}`;
+            }
+            
+            // Show animation when item is added to cart
+            showAddToCartAnimation(itemName) {
+                const cartIcon = document.getElementById('cartIcon');
+                cartIcon.classList.add('pulse');
+                setTimeout(() => {
+                    cartIcon.classList.remove('pulse');
+                }, 500);
+                
+                // Show a quick notification
+                this.showNotification(`${itemName} added to cart!`);
+            }
+            
+            // Show notification
+            showNotification(message) {
+                // Create notification element
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 100px;
+                    right: 20px;
+                    background: var(--primary);
+                    color: white;
+                    padding: 15px 20px;
+                    border-radius: 5px;
+                    z-index: 3000;
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                    transform: translateX(150%);
+                    transition: transform 0.3s ease;
+                `;
+                notification.textContent = message;
+                document.body.appendChild(notification);
+                
+                // Animate in
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(0)';
+                }, 100);
+                
+                // Animate out after 3 seconds
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(150%)';
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 300);
+                }, 3000);
+            }
+        }
+
+        // Initialize the cart when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            const cart = new ShoppingCart();
+            
+            // Cart modal elements
+            const cartIcon = document.getElementById('cartIcon');
+            const cartModal = document.getElementById('cartModal');
+            const closeCart = document.getElementById('closeCart');
+            const overlay = document.getElementById('overlay');
+            const clearCartBtn = document.getElementById('clearCart');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            
+            // Open cart modal
+            cartIcon.addEventListener('click', () => {
+                cartModal.classList.add('active');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
             });
-        });
-        
-        // Menu Filtering
-        const categoryBtns = document.querySelectorAll('.category-btn');
-        const menuCards = document.querySelectorAll('.menu-card');
-        
-        categoryBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // Remove active class from all buttons
-                categoryBtns.forEach(b => b.classList.remove('active'));
-                // Add active class to clicked button
-                btn.classList.add('active');
+            
+            // Close cart modal
+            function closeCartModal() {
+                cartModal.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            closeCart.addEventListener('click', closeCartModal);
+            overlay.addEventListener('click', closeCartModal);
+            
+            // Clear cart
+            clearCartBtn.addEventListener('click', () => {
+                if (confirm('Are you sure you want to clear your cart?')) {
+                    cart.clearCart();
+                }
+            });
+            
+            // Checkout
+            checkoutBtn.addEventListener('click', () => {
+                if (cart.items.length === 0) {
+                    alert('Your cart is empty!');
+                    return;
+                }
                 
-                const category = btn.getAttribute('data-category');
-                
-                menuCards.forEach(card => {
-                    if (category === 'all' || card.getAttribute('data-category') === category) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
-                    }
+                alert('Thank you for your order! Your food will be prepared shortly.');
+                cart.clearCart();
+                closeCartModal();
+            });
+            
+            // Add to cart buttons
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const name = e.target.getAttribute('data-name');
+                    const price = e.target.getAttribute('data-price');
+                    cart.addItem(name, price);
                 });
             });
-        });
-        
-        // Image Slider
-        const sliderContainer = document.querySelector('.slider-container');
-        const slides = document.querySelectorAll('.slide');
-        const prevBtn = document.querySelector('.prev');
-        const nextBtn = document.querySelector('.next');
-        const dots = document.querySelectorAll('.slider-dot');
-        
-        let currentSlide = 0;
-        const slideCount = slides.length;
-        
-        function updateSlider() {
-            sliderContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
             
-            // Update dots
-            dots.forEach((dot, index) => {
-                dot.classList.toggle('active', index === currentSlide);
+            // Add pulse animation to CSS
+            const style = document.createElement('style');
+            style.textContent = `
+                .pulse {
+                    animation: pulse 0.5s ease-in-out;
+                }
+                
+                @keyframes pulse {
+                    0% { transform: scale(1); }
+                    50% { transform: scale(1.1); }
+                    100% { transform: scale(1); }
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Mobile Navigation Toggle
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+            
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                hamburger.innerHTML = navLinks.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
             });
-        }
-        
-        // Next slide
-        nextBtn.addEventListener('click', () => {
-            currentSlide = (currentSlide + 1) % slideCount;
-            updateSlider();
-        });
-        
-        // Previous slide
-        prevBtn.addEventListener('click', () => {
-            currentSlide = (currentSlide - 1 + slideCount) % slideCount;
-            updateSlider();
-        });
-        
-        // Dot navigation
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                currentSlide = index;
+            
+            // Close mobile menu when clicking on a link
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                    hamburger.innerHTML = '<i class="fas fa-bars"></i>';
+                });
+            });
+            
+            // Menu Filtering
+            const categoryBtns = document.querySelectorAll('.category-btn');
+            const menuCards = document.querySelectorAll('.menu-card');
+            
+            categoryBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    categoryBtns.forEach(b => b.classList.remove('active'));
+                    // Add active class to clicked button
+                    btn.classList.add('active');
+                    
+                    const category = btn.getAttribute('data-category');
+                    
+                    menuCards.forEach(card => {
+                        if (category === 'all' || card.getAttribute('data-category') === category) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Image Slider
+            const sliderContainer = document.querySelector('.slider-container');
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.querySelector('.prev');
+            const nextBtn = document.querySelector('.next');
+            const dots = document.querySelectorAll('.slider-dot');
+            
+            let currentSlide = 0;
+            const slideCount = slides.length;
+            
+            function updateSlider() {
+                sliderContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+                
+                // Update dots
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentSlide);
+                });
+            }
+            
+            // Next slide
+            nextBtn.addEventListener('click', () => {
+                currentSlide = (currentSlide + 1) % slideCount;
                 updateSlider();
             });
-        });
-        
-        // Auto slide every 5 seconds
-        setInterval(() => {
-            currentSlide = (currentSlide + 1) % slideCount;
-            updateSlider();
-        }, 5000);
-        
-        // Contact Form Submission
-        const contactForm = document.getElementById('contactForm');
-        
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('Thank you for your message! We will get back to you soon.');
-            contactForm.reset();
+            
+            // Previous slide
+            prevBtn.addEventListener('click', () => {
+                currentSlide = (currentSlide - 1 + slideCount) % slideCount;
+                updateSlider();
+            });
+            
+            // Dot navigation
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    currentSlide = index;
+                    updateSlider();
+                });
+            });
+            
+            // Auto slide every 5 seconds
+            setInterval(() => {
+                currentSlide = (currentSlide + 1) % slideCount;
+                updateSlider();
+            }, 5000);
+            
+            // Contact Form Submission
+            const contactForm = document.getElementById('contactForm');
+            
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('Thank you for your message! We will get back to you soon.');
+                contactForm.reset();
+            });
         });
     </script>
 </body>
